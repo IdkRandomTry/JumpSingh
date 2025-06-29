@@ -22,10 +22,13 @@ public class jump : MonoBehaviour
     private bool isCharging = false;
     private float chargeStartTime;
 
+    private SpriteRenderer sr;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         PrecalculateJumpVelocities();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void PrecalculateJumpVelocities()
@@ -55,6 +58,16 @@ public class jump : MonoBehaviour
     void Update()
     {
         CheckGrounded();
+
+        // Look where you're going
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        {
+            sr.flipX = false;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow)|| Input.GetKey(KeyCode.D))
+        {
+            sr.flipX = true;
+        }
 
         // Start charging
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
