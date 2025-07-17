@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4b16819ea0dad2249bd86199a0cefa4f
+guid: 3dac26b41d952ad45893eaea6069b052
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638867933384876965
+  platformSettingsDirtyTick: 638883485282241951
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -123,19 +123,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: frog
+  - name: 05
     originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 7
+    pivot: {x: 0.5, y: -0.33333334}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 29
-      height: 31
-    spriteID: e00089caa02306d4cbef53d46ce6efaf
+      width: 20
+      height: 15
+    spriteID: acfbbcbf2d7f72d41a33f7ab30851422
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,25 +148,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 191094876
+      value0: 858359653
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: frog
+    name: 05
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: frog
+    - name: 05
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 2
-        y: 1
-        width: 29
-        height: 31
-      spriteId: e00089caa02306d4cbef53d46ce6efaf
+        x: 0
+        y: 5
+        width: 20
+        height: 15
+      spriteId: acfbbcbf2d7f72d41a33f7ab30851422
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -221,5 +221,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 32, y: 32}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 20, y: 20}
+  previousTextureSize: {x: 32, y: 32}
