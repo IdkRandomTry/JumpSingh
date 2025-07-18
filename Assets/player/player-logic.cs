@@ -26,6 +26,7 @@ public class jump : MonoBehaviour
     [Header("Visuals")]
     public Sprite NormalSprite;
     public Sprite MidairSprite;
+    public Sprite ChargeSprite;
     private SpriteRenderer sr;
 
     void Start()
@@ -97,7 +98,7 @@ public class jump : MonoBehaviour
     void JumpLogic()
     {
         // Start charging
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded && !isCharging)
         {
             isCharging = true;
             chargeStartTime = Time.time;
@@ -105,10 +106,11 @@ public class jump : MonoBehaviour
         }
 
         // While charging
-        if (isCharging && Input.GetKey(KeyCode.Space))
+        if (isCharging)
         {
             float chargePercent = Mathf.Clamp01((Time.time - chargeStartTime) / chargeTime);
             currentJumpLevel = Mathf.FloorToInt(chargePercent * ((float)discreteJumps - 1.0f));
+            sr.sprite = ChargeSprite;
         }
 
         // Release jump
