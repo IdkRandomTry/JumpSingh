@@ -86,7 +86,11 @@ public class jump : MonoBehaviour
         if (!hasWon)
         {
             timer += Time.deltaTime;
-            timerText.text = $"Time: {timer:F2}s";
+            int minutes = Mathf.FloorToInt(timer / 60f);
+            int seconds = Mathf.FloorToInt(timer % 60);
+            int milliseconds = Mathf.FloorToInt((timer * 100f) % 100);
+            timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
+
             LookSharp();
             CheckGrounded();
             JumpLogic();
