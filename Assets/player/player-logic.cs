@@ -1,13 +1,25 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class jump : MonoBehaviour
 {
-    [Header("Jump Settings")]
+    [Header("Timer and Shit")]
+    public GameObject winUI;                // Drag your "You Win!" UI GameObject here
+    //public Animator winAnimator;          // Animator to play win animation
+    public GameObject timerObject;
+    private TMP_Text timerText;
+    private float timer;
+    private bool hasWon = false;
+
+
+    [Header("Movement Settings")]
     public float minJumpPixelsY = 16f;      // Minimum jump height in pixels
     public float maxJumpPixelsY = 96f;
     public float minJumpPixelsX = 16f;      // Minimum jump height in pixels
     public float maxJumpPixelsX = 112f;     // Maximum jump height in pixels
-    public float pixelsPerUnit = 32;      // Pixels Per Unit
+    public float pixelsPerUnit = 32;        // Pixels Per Unit
     public float chargeTime = 1.5f;         // Time to reach max charge in seconds
     public int discreteJumps = 20;          // Number of discrete jump levels
 
@@ -15,13 +27,16 @@ public class jump : MonoBehaviour
     [Header("Debug")]
     public int currentJumpLevel = 0;        // Current charge level
 
-    private float[] jumpVelocityY;             // Pre-calculate jump forces for nerds
+
+    private float[] jumpVelocityY;          // Pre-calculate jump forces for nerds
     private float[] jumpVelocityX;
     private Rigidbody2D rb;
     private bool isGrounded = false;
     private bool isCharging = false;
     private float chargeStartTime;
     public float gravity;                  // Gravity in units per second squared
+    private Vector3 initialPosition;
+
 
     [Header("Visuals")]
     public Sprite NormalSprite;
@@ -29,8 +44,13 @@ public class jump : MonoBehaviour
     public Sprite ChargeSprite;
     private SpriteRenderer sr;
 
+
     void Start()
     {
+        initialPosition = transform.position;
+        winUI.SetActive(false);
+        hasWon = false;
+        timerText = timerObject.GetComponent<TMP_Text>();
         rb = GetComponent<Rigidbody2D>();
         gravity = Mathf.Abs(rb.gravityScale * Physics2D.gravity.y);
         PrecalculateJumpVelocities();
@@ -62,10 +82,18 @@ public class jump : MonoBehaviour
 
     void Update()
     {
-        LookSharp();
-        CheckGrounded();
-        JumpLogic();
-        ClampVelocity();
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        if (!hasWon)
+        {
+            timer += Time.deltaTime;
+            timerText.text = $"Time: {timer:F2}s";
+            LookSharp();
+            CheckGrounded();
+            JumpLogic();
+            ClampVelocity();
+            CheckReset();
+        }
+
     }
 
     void CheckGrounded()
@@ -144,5 +172,25 @@ public class jump : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Sign(rb.linearVelocity.y) * jumpVelocityY[discreteJumps - 1]);
         }
     }
-}
 
+    void CheckReset()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            transform.position = initialPosition;
+            timer = 0f;
+            hasWon = false;
+            winUI.SetActive(false);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!hasWon && other.CompareTag("HotBabe"))
+        {
+            hasWon = true;
+            winUI.SetActive(true);
+        }
+
+    }
+}
