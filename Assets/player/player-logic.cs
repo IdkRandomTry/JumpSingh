@@ -2,16 +2,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
+using UnityEditor.Experimental.GraphView;
 
 public class jump : MonoBehaviour
 {
-    [Header("Timer and Shit")]
+    [Header("Timer and Shit")] //Unprofessional as fuck
     public GameObject winUI;                // Drag your "You Win!" UI GameObject here
     //public Animator winAnimator;          // Animator to play win animation
     public GameObject timerObject;
     private TMP_Text timerText;
     private float timer;
     private bool hasWon = false;
+    public float walkAnimInterval = 0.2f;
+    private float walkTimer = 0f;       //timer to change the walking sprites
+    
 
 
     [Header("Movement Settings")]
@@ -22,6 +28,8 @@ public class jump : MonoBehaviour
     public float pixelsPerUnit = 32;        // Pixels Per Unit
     public float chargeTime = 1.5f;         // Time to reach max charge in seconds
     public int discreteJumps = 20;          // Number of discrete jump levels
+    public float walkSpeed = 2f;
+    private bool walkToggle = false;    //toggles the sprite while walking
 
 
     [Header("Debug")]
@@ -33,6 +41,7 @@ public class jump : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
     private bool isCharging = false;
+    private bool isWalking = false;
     private float chargeStartTime;
     public float gravity;                  // Gravity in units per second squared
     private Vector3 initialPosition;
@@ -42,6 +51,7 @@ public class jump : MonoBehaviour
     public Sprite NormalSprite;
     public Sprite MidairSprite;
     public Sprite ChargeSprite;
+    public Sprite walkSprite;
     private SpriteRenderer sr;
 
 
@@ -96,6 +106,7 @@ public class jump : MonoBehaviour
             JumpLogic();
             ClampVelocity();
             CheckReset();
+            WalkLogic();
         }
 
     }
@@ -104,13 +115,26 @@ public class jump : MonoBehaviour
     {
         // Need to add collision detection logic here
         isGrounded = (Mathf.Abs(rb.linearVelocity.y) < 0.2);
-        if (isGrounded)
+        if (isWalking && isGrounded)
+        {
+            walkTimer += Time.deltaTime;
+            if (walkTimer >= walkAnimInterval)
+            {
+                walkTimer = 0f;
+                walkToggle = !walkToggle;
+            }
+
+            sr.sprite = walkToggle ? walkSprite : NormalSprite;
+        }
+        else if (isGrounded)
         {
             sr.sprite = NormalSprite;
+            walkTimer = 0f;
         }
         else
         {
             sr.sprite = MidairSprite;
+            walkTimer = 0f;
         }
     }
 
@@ -161,6 +185,35 @@ public class jump : MonoBehaviour
                 rb.linearVelocity = new Vector2(0, jumpVelocityY[currentJumpLevel]);
             }
             isCharging = false;
+        }
+    }
+
+    void WalkLogic()
+    {
+        if (isGrounded) //only walk on ground
+        {
+            int moveDir = 0; //one variable for movement direction
+
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveDir = -1;
+            }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                moveDir = 1;
+            }
+
+            if (moveDir != 0 && !isCharging)
+            {
+                rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y);
+                isWalking = true;
+            }
+            else
+            {
+                isWalking = false;
+            }
+
         }
     }
 
