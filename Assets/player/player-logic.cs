@@ -190,7 +190,7 @@ public class jump : MonoBehaviour
 
     void WalkLogic()
     {
-        if (isGrounded) //only walk on ground
+        if (isGrounded && !isCharging) //only walk on ground
         {
             int moveDir = 0; //one variable for movement direction
 
@@ -206,7 +206,9 @@ public class jump : MonoBehaviour
 
             if (moveDir != 0 && !isCharging)
             {
-                rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y);
+                if (Mathf.Abs(rb.linearVelocity.y) < 0.1f) {
+                    rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y);
+                }
                 isWalking = true;
             }
             else

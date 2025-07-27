@@ -9094,6 +9094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winUI: {fileID: 2134665515}
   timerObject: {fileID: 312744187}
+  walkAnimInterval: 0.1
   minJumpPixelsY: 16
   maxJumpPixelsY: 96
   minJumpPixelsX: 32
@@ -9101,11 +9102,13 @@ MonoBehaviour:
   pixelsPerUnit: 32
   chargeTime: 1
   discreteJumps: 20
+  walkSpeed: 2
   currentJumpLevel: 0
   gravity: 0
   NormalSprite: {fileID: 21300000, guid: 0f89c92cfa0909a4a8dcb1a9147dd98d, type: 3}
   MidairSprite: {fileID: 21300000, guid: 19903e3c811791144a87771a657d91aa, type: 3}
   ChargeSprite: {fileID: 21300000, guid: 043fc0aee0513054fb05bf3dbe96d4a5, type: 3}
+  walkSprite: {fileID: 21300000, guid: b7352843da4641c47881701dbbfaa43d, type: 3}
 --- !u!1 &1427183623
 GameObject:
   m_ObjectHideFlags: 0
