@@ -207,7 +207,7 @@ public class jump : MonoBehaviour
             if (moveDir != 0 && !isCharging)
             {
                 if (Mathf.Abs(rb.linearVelocity.y) < 0.1f) {
-                    rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y);
+                    rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y); //only walk if y velocity is less than a threshhold, avoids clashes.
                 }
                 isWalking = true;
             }
