@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 
 public class jump : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class jump : MonoBehaviour
     [Header("Movement Settings")]
     public float minJumpPixelsY = 16f;      // Minimum jump height in pixels
     public float maxJumpPixelsY = 96f;
-    public float minJumpPixelsX = 16f;      // Minimum jump height in pixels
+    public float minJumpPixelsX = 32f;      // Minimum jump height in pixels
     public float maxJumpPixelsX = 112f;     // Maximum jump height in pixels
     public float pixelsPerUnit = 32;        // Pixels Per Unit
     public float chargeTime = 1.5f;         // Time to reach max charge in seconds
