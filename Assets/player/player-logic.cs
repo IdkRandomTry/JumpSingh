@@ -52,6 +52,12 @@ public class jump : MonoBehaviour
     public Sprite walkSprite;
     private SpriteRenderer sr;
 
+    [Header("Win UI")]
+    public CanvasGroup winUI; // Uncomment if you want to use a UI canvas for win state
+    public float duration = 7f;
+    public Transform BabeCheck;
+    public float BabeCheckRadius = 0.1f; // Radius for the Babe check
+    public string targetTag = "HotBabe";
 
     void Start()
     {
@@ -63,6 +69,24 @@ public class jump : MonoBehaviour
         gravity = Mathf.Abs(rb.gravityScale * Physics2D.gravity.y);
         PrecalculateJumpVelocities();
         sr = GetComponent<SpriteRenderer>();
+    }
+
+    System.Collections.IEnumerator FadeIn()
+    {
+        float t = 0f;
+        winUI.alpha = 0f;
+        winUI.interactable = false;
+        winUI.blocksRaycasts = false;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            winUI.alpha = Mathf.Clamp01(t / duration);
+            yield return null;
+        }
+
+        winUI.interactable = true;
+        winUI.blocksRaycasts = true;
     }
 
     void PrecalculateJumpVelocities()
@@ -251,6 +275,8 @@ public class jump : MonoBehaviour
         if (!hasWon && other.CompareTag("HotBabe"))
         {
             hasWon = true;
+            sr.sprite = ChargeSprite;
+            StartCoroutine(FadeIn());
         }
     }
     /*void OnDrawGizmosSelected()
