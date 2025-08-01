@@ -4,26 +4,24 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
-//using UnityEditor.Experimental.GraphView;
 
 public class jump : MonoBehaviour
 {
     [Header("Timer and Shit")] //Unprofessional as fuck
-    public GameObject winUI;                // Drag your "You Win!" UI GameObject here
-    //public Animator winAnimator;          // Animator to play win animation
     public GameObject timerObject;
     private TMP_Text timerText;
     private float timer;
     private bool hasWon = false;
     public float walkAnimInterval = 0.2f;
     private float walkTimer = 0f;       //timer to change the walking sprites
-    
-
 
     [Header("Movement Settings")]
+    [SerializeField] BoxCollider2D feetCollider;
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float extraHeight = 0.05f;
     public float minJumpPixelsY = 16f;      // Minimum jump height in pixels
     public float maxJumpPixelsY = 96f;
-    public float minJumpPixelsX = 32f;      // Minimum jump height in pixels
+    public float minJumpPixelsX = 16f;      // Minimum jump height in pixels
     public float maxJumpPixelsX = 112f;     // Maximum jump height in pixels
     public float pixelsPerUnit = 32;        // Pixels Per Unit
     public float chargeTime = 1.5f;         // Time to reach max charge in seconds
@@ -58,7 +56,7 @@ public class jump : MonoBehaviour
     void Start()
     {
         initialPosition = transform.position;
-        winUI.SetActive(false);
+        //winUI.alpha = 0f;
         hasWon = false;
         timerText = timerObject.GetComponent<TMP_Text>();
         rb = GetComponent<Rigidbody2D>();
@@ -113,8 +111,11 @@ public class jump : MonoBehaviour
 
     void CheckGrounded()
     {
-        // Need to add collision detection logic here
-        isGrounded = (Mathf.Abs(rb.linearVelocity.y) < 0.2);
+        Bounds bounds = feetCollider.bounds;
+        Vector2 boxCenter = new Vector2(bounds.center.x, bounds.min.y - extraHeight * 0.5f);
+        Vector2 boxSize = new Vector2(bounds.size.x, extraHeight);
+        isGrounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundLayer) && (Mathf.Abs(rb.linearVelocity.y) < 0.1);
+
         if (isWalking && isGrounded)
         {
             walkTimer += Time.deltaTime;
@@ -206,7 +207,8 @@ public class jump : MonoBehaviour
 
             if (moveDir != 0 && !isCharging)
             {
-                if (Mathf.Abs(rb.linearVelocity.y) < 0.1f) {
+                if (Mathf.Abs(rb.linearVelocity.y) < 0.1f)
+                {
                     rb.linearVelocity = new Vector2(moveDir * walkSpeed, rb.linearVelocity.y); //only walk if y velocity is less than a threshhold, avoids clashes.
                 }
                 isWalking = true;
@@ -239,17 +241,28 @@ public class jump : MonoBehaviour
             transform.position = initialPosition;
             timer = 0f;
             hasWon = false;
-            winUI.SetActive(false);
+            //winUI.alpha = 0f;
         }
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (!hasWon && other.CompareTag("HotBabe"))
         {
             hasWon = true;
-            winUI.SetActive(true);
         }
-
     }
+    /*void OnDrawGizmosSelected()
+    {
+        if (feetCollider == null) return;
+
+        Bounds bounds = feetCollider.bounds;
+        Vector2 boxCenter = new Vector2(bounds.center.x, bounds.min.y - extraHeight * 0.5f);
+        Vector2 boxSize = new Vector2(bounds.size.x, extraHeight);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxCenter, boxSize);
+    }*/
+
 }
