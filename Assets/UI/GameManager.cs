@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
         Time.timeScale = 1;
-        StartPlayerMovement();
+        //StartPlayerMovement();
     }
 
     public void MainMenu()

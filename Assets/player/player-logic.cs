@@ -137,7 +137,7 @@ public class jump : MonoBehaviour
     {
         Bounds bounds = feetCollider.bounds;
         Vector2 boxCenter = new Vector2(bounds.center.x, bounds.min.y - extraHeight * 0.5f);
-        Vector2 boxSize = new Vector2(bounds.size.x, extraHeight);
+        Vector2 boxSize = new Vector2(bounds.size.x*1.2f, extraHeight);
         isGrounded = Physics2D.OverlapBox(boxCenter, boxSize, 0f, groundLayer) && (Mathf.Abs(rb.linearVelocity.y) < 0.1);
 
         if (isWalking && isGrounded)
@@ -285,7 +285,7 @@ public class jump : MonoBehaviour
 
         Bounds bounds = feetCollider.bounds;
         Vector2 boxCenter = new Vector2(bounds.center.x, bounds.min.y - extraHeight * 0.5f);
-        Vector2 boxSize = new Vector2(bounds.size.x, extraHeight);
+        Vector2 boxSize = new Vector2(bounds.size.x*1.2f, extraHeight);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCenter, boxSize);
